@@ -1,6 +1,23 @@
 import {Entity, model, property} from '@loopback/repository';
 
-@model()
+@model({
+  settings: {
+    foreignKeys: {
+      fkMascotaVacunaId: {
+        name: 'fkMascotaVacunaId',
+        entity: 'Mascota',
+        entityKey: 'id',
+        foreignKey: 'mascotaId',
+      },
+      fkVacunaVaccineId: {
+        name: 'fkVacunaVaccineId',
+        entity: 'Vacuna',
+        entityKey: 'id',
+        foreignKey: 'vacunaId',
+      },
+    },
+  },
+})
 export class VacunaMascota extends Entity {
   @property({
     type: 'number',
@@ -9,6 +26,15 @@ export class VacunaMascota extends Entity {
   })
   id?: number;
 
+  @property({
+    type: 'number',
+  })
+  mascotaId?: number;
+
+  @property({
+    type: 'number',
+  })
+  vacunaId?: number;
 
   constructor(data?: Partial<VacunaMascota>) {
     super(data);
