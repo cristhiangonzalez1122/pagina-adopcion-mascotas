@@ -9,8 +9,8 @@ import {Ciudad} from './ciudad.model';
 import {HistoriaMedica} from './historia-medica.model';
 import {Raza} from './raza.model';
 import {SolicitudAdopcion} from './solicitud-adopcion.model';
-import {Vacuna} from './vacuna.model';
 import {VacunaMascota} from './vacuna-mascota.model';
+import {Vacuna} from './vacuna.model';
 
 @model({
   settings: {
@@ -36,7 +36,7 @@ export class Mascota extends Entity {
     id: true,
     generated: true,
   })
-  id?: string;
+  id?: number;
 
   @property({
     type: 'string',

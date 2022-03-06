@@ -5,7 +5,7 @@ import {
   repository,
   Where,
 } from '@loopback/repository';
-  import {
+import {
   del,
   get,
   getModelSchemaRef,
@@ -15,17 +15,14 @@ import {
   post,
   requestBody,
 } from '@loopback/rest';
-import {
-Mascota,
-VacunaMascota,
-Vacuna,
-} from '../models';
+import {Mascota, Vacuna} from '../models';
 import {MascotaRepository} from '../repositories';
 
 export class MascotaVacunaController {
   constructor(
-    @repository(MascotaRepository) protected mascotaRepository: MascotaRepository,
-  ) { }
+    @repository(MascotaRepository)
+    protected mascotaRepository: MascotaRepository,
+  ) {}
 
   @get('/mascotas/{id}/vacunas', {
     responses: {
@@ -40,7 +37,7 @@ export class MascotaVacunaController {
     },
   })
   async find(
-    @param.path.string('id') id: string,
+    @param.path.string('id') id: number,
     @param.query.object('filter') filter?: Filter<Vacuna>,
   ): Promise<Vacuna[]> {
     return this.mascotaRepository.vacunas(id).find(filter);
@@ -65,7 +62,8 @@ export class MascotaVacunaController {
           }),
         },
       },
-    }) vacuna: Omit<Vacuna, 'id'>,
+    })
+    vacuna: Omit<Vacuna, 'id'>,
   ): Promise<Vacuna> {
     return this.mascotaRepository.vacunas(id).create(vacuna);
   }
@@ -79,7 +77,7 @@ export class MascotaVacunaController {
     },
   })
   async patch(
-    @param.path.string('id') id: string,
+    @param.path.string('id') id: number,
     @requestBody({
       content: {
         'application/json': {
@@ -88,7 +86,8 @@ export class MascotaVacunaController {
       },
     })
     vacuna: Partial<Vacuna>,
-    @param.query.object('where', getWhereSchemaFor(Vacuna)) where?: Where<Vacuna>,
+    @param.query.object('where', getWhereSchemaFor(Vacuna))
+    where?: Where<Vacuna>,
   ): Promise<Count> {
     return this.mascotaRepository.vacunas(id).patch(vacuna, where);
   }
@@ -102,8 +101,9 @@ export class MascotaVacunaController {
     },
   })
   async delete(
-    @param.path.string('id') id: string,
-    @param.query.object('where', getWhereSchemaFor(Vacuna)) where?: Where<Vacuna>,
+    @param.path.string('id') id: number,
+    @param.query.object('where', getWhereSchemaFor(Vacuna))
+    where?: Where<Vacuna>,
   ): Promise<Count> {
     return this.mascotaRepository.vacunas(id).delete(where);
   }

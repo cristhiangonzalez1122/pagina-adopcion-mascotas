@@ -37,7 +37,7 @@ export class MascotaHistoriaMedicaController {
     },
   })
   async find(
-    @param.path.string('id') id: string,
+    @param.path.string('id') id: number,
     @param.query.object('filter') filter?: Filter<HistoriaMedica>,
   ): Promise<HistoriaMedica[]> {
     return this.mascotaRepository.historiasMedicas(id).find(filter);
@@ -80,7 +80,7 @@ export class MascotaHistoriaMedicaController {
     },
   })
   async patch(
-    @param.path.string('id') id: string,
+    @param.path.string('id') id: number,
     @requestBody({
       content: {
         'application/json': {
@@ -106,7 +106,7 @@ export class MascotaHistoriaMedicaController {
     },
   })
   async delete(
-    @param.path.string('id') id: string,
+    @param.path.string('id') id: number,
     @param.query.object('where', getWhereSchemaFor(HistoriaMedica))
     where?: Where<HistoriaMedica>,
   ): Promise<Count> {

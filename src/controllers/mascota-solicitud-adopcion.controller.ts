@@ -40,7 +40,7 @@ export class MascotaSolicitudAdopcionController {
     },
   })
   async find(
-    @param.path.string('id') id: string,
+    @param.path.string('id') id: number,
     @param.query.object('filter') filter?: Filter<SolicitudAdopcion>,
   ): Promise<SolicitudAdopcion[]> {
     return this.mascotaRepository.solicitudesdeadopcion(id).find(filter);
@@ -85,7 +85,7 @@ export class MascotaSolicitudAdopcionController {
     },
   })
   async patch(
-    @param.path.string('id') id: string,
+    @param.path.string('id') id: number,
     @requestBody({
       content: {
         'application/json': {
@@ -111,7 +111,7 @@ export class MascotaSolicitudAdopcionController {
     },
   })
   async delete(
-    @param.path.string('id') id: string,
+    @param.path.string('id') id: number,
     @param.query.object('where', getWhereSchemaFor(SolicitudAdopcion))
     where?: Where<SolicitudAdopcion>,
   ): Promise<Count> {
