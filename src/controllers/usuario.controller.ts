@@ -1,3 +1,4 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -7,23 +8,29 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
   response,
 } from '@loopback/rest';
+import {Keys} from '../config/keys';
 import {Usuario} from '../models';
 import {UsuarioRepository} from '../repositories';
+import {AutenticationService, NotificationService} from '../services';
 
 export class UsuarioController {
   constructor(
     @repository(UsuarioRepository)
-    public usuarioRepository : UsuarioRepository,
+    public usuarioRepository: UsuarioRepository,
+    @service(AutenticationService)
+    public autenticationService: AutenticationService,
+    @service(NotificationService)
+    public notificationService: NotificationService,
   ) {}
 
   @post('/usuarios')
@@ -44,7 +51,21 @@ export class UsuarioController {
     })
     usuario: Omit<Usuario, 'id'>,
   ): Promise<Usuario> {
-    return this.usuarioRepository.create(usuario);
+    const clave = this.autenticationService.generarClave();
+    const claveCifrada = this.autenticationService.cifrarClave(clave);
+    console.log(claveCifrada);
+    usuario.clave = claveCifrada;
+    const userAdded = await this.usuarioRepository.create(usuario);
+
+    //user send email
+    const body = `<strong>Hola, bienvenid@<strong><br />su correo ha sido registrado en el sistema de mascotas sus datos de accesso son:<br/><br/><ul><li>Usuario: ${usuario.userName}</li><li>clave: ${clave}</li></ul> `;
+    this.notificationService.sendEmail(
+      usuario.userName,
+      Keys.subjectRegisterUser,
+      body,
+    );
+
+    return userAdded;
   }
 
   @get('/usuarios/count')
@@ -52,9 +73,7 @@ export class UsuarioController {
     description: 'Usuario model count',
     content: {'application/json': {schema: CountSchema}},
   })
-  async count(
-    @param.where(Usuario) where?: Where<Usuario>,
-  ): Promise<Count> {
+  async count(@param.where(Usuario) where?: Where<Usuario>): Promise<Count> {
     return this.usuarioRepository.count(where);
   }
 
@@ -106,7 +125,8 @@ export class UsuarioController {
   })
   async findById(
     @param.path.string('id') id: string,
-    @param.filter(Usuario, {exclude: 'where'}) filter?: FilterExcludingWhere<Usuario>
+    @param.filter(Usuario, {exclude: 'where'})
+    filter?: FilterExcludingWhere<Usuario>,
   ): Promise<Usuario> {
     return this.usuarioRepository.findById(id, filter);
   }

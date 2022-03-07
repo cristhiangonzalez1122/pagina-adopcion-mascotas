@@ -55,9 +55,15 @@
     "@loopback/rest": "^11.1.1",
     "@loopback/rest-explorer": "^4.1.1",
     "@loopback/service-proxy": "^4.1.1",
+    "@sendgrid/mail": "^7.6.1",
+    "crypto-js": "^4.1.1",
+    "generate-password": "^1.7.0",
     "loopback-connector-mongodb": "^5.6.0",
     "loopback-connector-mysql": "^5.4.4",
-    "tslib": "^2.0.0"
+    "password-generator": "^2.3.2",
+    "sib-api-v3-sdk": "^8.2.1",
+    "tslib": "^2.0.0",
+    "twilio": "^3.75.0"
   },
   "devDependencies": {
     "@loopback/build": "^8.1.1",
