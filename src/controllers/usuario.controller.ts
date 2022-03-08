@@ -11,6 +11,7 @@ import {
   del,
   get,
   getModelSchemaRef,
+  HttpErrors,
   param,
   patch,
   post,
@@ -19,7 +20,7 @@ import {
   response,
 } from '@loopback/rest';
 import {Keys} from '../config/keys';
-import {Usuario} from '../models';
+import {Credenciales, Usuario} from '../models';
 import {UsuarioRepository} from '../repositories';
 import {AutenticationService, NotificationService} from '../services';
 
@@ -32,6 +33,33 @@ export class UsuarioController {
     @service(NotificationService)
     public notificationService: NotificationService,
   ) {}
+
+  @post('/identificar', {
+    responses: {
+      '200': {
+        description: 'Identificacion de usuarios',
+      },
+    },
+  })
+  async identificar(@requestBody() credenciales: Credenciales) {
+    const user = await this.autenticationService.identificarPropietario(
+      credenciales.usuario,
+      credenciales.clave,
+    );
+    if (user) {
+      const token = this.autenticationService.generateJwt(user);
+      return {
+        data: {
+          id: user.id,
+          uName: user.userName,
+          role: user.rolId,
+        },
+        tk: token,
+      };
+    } else {
+      throw new HttpErrors[401]('invalid user or password');
+    }
+  }
 
   @post('/usuarios')
   @response(200, {
