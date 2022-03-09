@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -7,23 +8,24 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
   response,
 } from '@loopback/rest';
 import {Departamento} from '../models';
 import {DepartamentoRepository} from '../repositories';
 
+@authenticate('admin')
 export class DepartamentoController {
   constructor(
     @repository(DepartamentoRepository)
-    public departamentoRepository : DepartamentoRepository,
+    public departamentoRepository: DepartamentoRepository,
   ) {}
 
   @post('/departamentos')
@@ -57,7 +59,7 @@ export class DepartamentoController {
   ): Promise<Count> {
     return this.departamentoRepository.count(where);
   }
-
+  @authenticate.skip()
   @get('/departamentos')
   @response(200, {
     description: 'Array of Departamento model instances',
@@ -94,7 +96,7 @@ export class DepartamentoController {
   ): Promise<Count> {
     return this.departamentoRepository.updateAll(departamento, where);
   }
-
+  @authenticate.skip()
   @get('/departamentos/{id}')
   @response(200, {
     description: 'Departamento model instance',
@@ -106,7 +108,8 @@ export class DepartamentoController {
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.filter(Departamento, {exclude: 'where'}) filter?: FilterExcludingWhere<Departamento>
+    @param.filter(Departamento, {exclude: 'where'})
+    filter?: FilterExcludingWhere<Departamento>,
   ): Promise<Departamento> {
     return this.departamentoRepository.findById(id, filter);
   }

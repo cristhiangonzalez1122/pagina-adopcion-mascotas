@@ -49,11 +49,13 @@
     "!*/__tests__"
   ],
   "dependencies": {
+    "@loopback/authentication": "^8.1.1",
     "@loopback/boot": "^4.1.1",
     "@loopback/core": "^3.1.1",
     "@loopback/repository": "^4.1.1",
     "@loopback/rest": "^11.1.1",
     "@loopback/rest-explorer": "^4.1.1",
+    "@loopback/security": "^0.7.1",
     "@loopback/service-proxy": "^4.1.1",
     "@sendgrid/mail": "^7.6.1",
     "crypto-js": "^4.1.1",
@@ -61,6 +63,7 @@
     "jsonwebtoken": "^8.5.1",
     "loopback-connector-mongodb": "^5.6.0",
     "loopback-connector-mysql": "^5.4.4",
+    "parse-bearer-token": "^1.0.1",
     "password-generator": "^2.3.2",
     "sib-api-v3-sdk": "^8.2.1",
     "tslib": "^2.0.0",

@@ -80,6 +80,7 @@ export class UsuarioController {
     usuario: Omit<Usuario, 'id'>,
   ): Promise<Usuario> {
     const clave = this.autenticationService.generarClave();
+    console.log(clave);
     const claveCifrada = this.autenticationService.cifrarClave(clave);
     console.log(claveCifrada);
     usuario.clave = claveCifrada;

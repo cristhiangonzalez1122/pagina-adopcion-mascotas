@@ -56,4 +56,16 @@ export class AutenticationService {
     );
     return token;
   }
+
+  /**
+   * verificar token
+   */
+  validarToken(token: string) {
+    try {
+      const decoded = jwt.verify(token, Keys.jwtKey);
+      return decoded;
+    } catch {
+      return false;
+    }
+  }
 }
