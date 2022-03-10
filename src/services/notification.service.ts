@@ -3,6 +3,7 @@ import {/* inject, */ BindingScope, injectable} from '@loopback/core';
 import {Keys} from '../config/keys';
 
 const sgMail = require('@sendgrid/mail');
+const twilio = require('twilio');
 
 @injectable({scope: BindingScope.TRANSIENT})
 export class NotificationService {
@@ -27,5 +28,28 @@ export class NotificationService {
       .catch((error: any) => {
         console.error(error);
       });
+  }
+
+  sendSms(destinataryPhone: string, sms: string) {
+    try {
+      const accountSid = process.env.TWILIO_ACCOUNT_SID; // Your Account SID from www.twilio.com/console
+      const authToken = process.env.TWILIO_AUTH_TOKEN; // Your Auth Token from www.twilio.com/console
+
+      const client = new twilio(accountSid, authToken);
+
+      client.messages
+        .create({
+          body: sms,
+          to: destinataryPhone, // Text this number
+          from: Keys.twilioSender, // From a valid Twilio number
+        })
+        .then((message: any) => {
+          console.log(message.sid);
+          return true;
+        });
+      return true;
+    } catch {
+      return false;
+    }
   }
 }

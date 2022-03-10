@@ -4,4 +4,5 @@ export namespace Keys {
   export const subjectRegisterUser =
     'registro exitoso en el sistema de Mascotas';
   export const jwtKey = 'Clav3JWT';
+  export const twilioSender = '+16815081723';
 }

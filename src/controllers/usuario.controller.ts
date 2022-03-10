@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import {service} from '@loopback/core';
 import {
   Count,
@@ -20,7 +21,7 @@ import {
   response,
 } from '@loopback/rest';
 import {Keys} from '../config/keys';
-import {Credenciales, Usuario} from '../models';
+import {Credenciales, ResetearClave, Usuario} from '../models';
 import {UsuarioRepository} from '../repositories';
 import {AutenticationService, NotificationService} from '../services';
 
@@ -195,5 +196,46 @@ export class UsuarioController {
   })
   async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.usuarioRepository.deleteById(id);
+  }
+
+  @post('/reset-password')
+  @response(200, {
+    description: 'Usuario model instance',
+    content: {'application/json': {schema: getModelSchemaRef(ResetearClave)}},
+  })
+  async resetPassword(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(ResetearClave),
+        },
+      },
+    })
+    resetearClave: ResetearClave,
+  ): Promise<Object> {
+    const user = await this.usuarioRepository.findOne({
+      where: {userName: resetearClave.email},
+    });
+    if (!user) {
+      throw new HttpErrors[401]('no se encuentra el usuario');
+    }
+    const clave = this.autenticationService.generarClave();
+    console.log(clave);
+    const claveCifrada = this.autenticationService.cifrarClave(clave);
+    console.log(claveCifrada);
+    user.clave = claveCifrada;
+    await this.usuarioRepository.update(user);
+
+    //notificar al usuario sms cambio de clave
+    const content = `Hola, hemos Reseteado tu clave. Usuario: ${user.userName} y clave: ${clave}`;
+    const send = this.notificationService.sendSms(user.telefono, content);
+    if (send) {
+      return {
+        enviado: 'ok',
+      };
+    }
+    return {
+      enviado: 'KO',
+    };
   }
 }
