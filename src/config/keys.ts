@@ -13,7 +13,7 @@ export namespace Keys {
     '.JPEG',
     'SVG',
   ];
-  export const tamMaxImagenMascota = 1024 * 1024;
+  export const tamMaxImagenMascota = 2048 * 2048;
   export const carpetaImagenPersonas = '../../archivos/personas';
   export const nombreCampoImagenPersona = 'file';
 }

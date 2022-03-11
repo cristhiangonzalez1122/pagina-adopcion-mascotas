@@ -1,8 +1,10 @@
+export * from './carga-archivo.controller';
 export * from './ciudad-departamento.controller';
 export * from './ciudad-mascota.controller';
 export * from './ciudad.controller';
 export * from './departamento-ciudad.controller';
 export * from './departamento.controller';
+export * from './descarga-archivo.controller';
 export * from './estado-solicitud-solicitud-adopcion.controller';
 export * from './historia-medica-mascota.controller';
 export * from './historia-medica.controller';
@@ -27,4 +29,3 @@ export * from './tipomascota-raza.controller';
 export * from './usuario-rol.controller';
 export * from './usuario.controller';
 export * from './vacuna.controller';
-export * from './load-file.controller';
