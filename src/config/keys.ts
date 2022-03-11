@@ -5,4 +5,15 @@ export namespace Keys {
     'registro exitoso en el sistema de Mascotas';
   export const jwtKey = 'Clav3JWT';
   export const twilioSender = '+16815081723';
+  export const imageFolderPet = '../../archivos/mascotas';
+  export const nombreCampoImagenMascota = 'file';
+  export const extensionesPermitidasIMG: string[] = [
+    '.PNG',
+    '.JPG',
+    '.JPEG',
+    'SVG',
+  ];
+  export const tamMaxImagenMascota = 1024 * 1024;
+  export const carpetaImagenPersonas = '../../archivos/personas';
+  export const nombreCampoImagenPersona = 'file';
 }

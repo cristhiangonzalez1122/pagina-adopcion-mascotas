@@ -27,3 +27,4 @@ export * from './tipomascota-raza.controller';
 export * from './usuario-rol.controller';
 export * from './usuario.controller';
 export * from './vacuna.controller';
+export * from './load-file.controller';
